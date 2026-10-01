@@ -8,13 +8,17 @@ When to use:
   shortest window that satisfies ..."
 
 Core idea:
-Maintain a window [left, right] that always stays valid. Grow it from the
-right every iteration; only shrink it from the left when the window becomes
-invalid. Because left only ever moves forward, it moves at most n times
-total across the whole run, so even with a nested while loop the overall
-time is O(n), not O(n^2).
+Maintain a window [left, right]. Grow it from the right every iteration,
+then adjust from the left with a while loop. Because left only ever moves
+forward, it moves at most n times total across the whole run, so even with
+a nested while loop the overall time is O(n), not O(n^2).
 
-Template:
+There are two mirror-image templates depending on whether you're looking
+for the LONGEST or SHORTEST valid window -- mixing them up is the most
+common bug in this pattern.
+
+Template A -- longest valid window (shrink WHILE INVALID, i.e. shrink
+until valid again, then record):
 
     int left = 0;
     for (int right = 0; right < n; right++) {
@@ -25,19 +29,48 @@ Template:
             left++;
         }
 
-        // 3. window [left, right] is now valid -- update the answer
+        // 3. window [left, right] is now valid -- record it
         // e.g. max = Math.max(max, right - left + 1);
     }
+
+Template B -- shortest valid window (shrink WHILE STILL VALID, recording
+on every single step of the shrink, not just before/after it):
+
+    int left = 0;
+    for (int right = 0; right < n; right++) {
+        // 1. add arr[right] into the window
+
+        while (/* window is valid */) {
+            // 2. record FIRST, before shrinking further
+            // e.g. min = Math.min(min, right - left + 1);
+
+            // 3. then remove arr[left] from the window
+            left++;
+        }
+    }
+
+The bug to watch for in Template B: if you only check validity once before
+the while loop, or once after it exits, you can skip over a valid window
+that existed mid-shrink -- especially with values that can jump by more
+than 1 per step (e.g. summing positive integers, where removing one
+element can overshoot past the target in a single step). The fix is to
+make the check the FIRST thing inside the while loop, so every valid state
+gets recorded, not just the boundary states.
 
 Variants seen so far:
 - Fixed-size window: skip the while loop, just slide and check once
   right - left + 1 == k.
-- "At most K" / "no repeats": shrink with a while loop until valid again
-  (this file's template).
-- Track window state with a HashSet (presence only), or a HashMap/int[]
-  array (counts), depending on whether you need frequency info.
+- "At most K" / "no repeats" (longest window): Template A.
+- "Minimal length that satisfies sum/condition" (shortest window): Template B.
+- Track window state with a HashSet (presence only), a HashMap/int[] array
+  (counts), or a running numeric accumulator (sum), depending on the
+  condition being tracked.
 
 Problems solved with this pattern:
-- LC 3  - Longest Substring Without Repeating Characters (leetcode/3.java)
-  Window state: HashSet<Character> (presence only, no repeats allowed).
+- LC 3   - Longest Substring Without Repeating Characters (leetcode/3.java)
+  Template A. Window state: HashSet<Character> (presence only).
+- LC 209 - Minimum Size Subarray Sum (leetcode/209.java)
+  Template B. Window state: running int sum. Classic case of the
+  check-mid-shrink bug described above -- values can drop by more than 1
+  per removal, so a valid window can exist between shrink steps.
 */
