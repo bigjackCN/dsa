@@ -73,4 +73,24 @@ Problems solved with this pattern:
   Template B. Window state: running int sum. Classic case of the
   check-mid-shrink bug described above -- values can drop by more than 1
   per removal, so a valid window can exist between shrink steps.
+- LC 424 - Longest Repeating Character Replacement (leetcode/424.java)
+  Template A. Window state: int[26] frequency array + a monotonic
+  (never-decreased) maxFreq upper bound. See follow-up note below.
+*/
+
+/*
+Follow-up note (after LC 424):
+
+Template A doesn't always need the "window invalid" check to be perfectly
+accurate on every shrink step. If the quantity you're tracking (like
+maxFreq in LC 424) only ever needs to be a safe upper bound rather than
+the exact current value, you can skip recomputing it on shrink entirely.
+This trades a small amount of "precision" (you might under-shrink by a
+little) for simplicity, and for longest-window problems this is still
+correct overall, because the final answer only cares about the best valid
+window ever seen, not about the window being minimal at every point in
+time. Contrast with Template B (LC 209), where under-tracking the window
+state would silently skip over the actual answer -- there the check must
+be exact at every step. Longest-window problems can tolerate looseness
+in the shrink condition; shortest-window problems generally cannot.
 */
