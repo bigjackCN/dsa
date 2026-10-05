@@ -76,6 +76,10 @@ Problems solved with this pattern:
 - LC 424 - Longest Repeating Character Replacement (leetcode/424.java)
   Template A. Window state: int[26] frequency array + a monotonic
   (never-decreased) maxFreq upper bound. See follow-up note below.
+- LC 567 - Permutation in String (leetcode/567.java)
+  Fixed-size window (length = s1.length()). Window state: int[26] counts,
+  compared against s1's counts with Arrays.equals (O(26) = O(1)). Pattern:
+  pre-fill first m-1 chars, then add right / compare / remove left.
 */
 
 /*
