@@ -80,6 +80,10 @@ Problems solved with this pattern:
   Fixed-size window (length = s1.length()). Window state: int[26] counts,
   compared against s1's counts with Arrays.equals (O(26) = O(1)). Pattern:
   pre-fill first m-1 chars, then add right / compare / remove left.
+- LC 904 - Fruit Into Baskets (leetcode/904.java)
+  Template A. "At most K distinct" window (K = 2). Window state:
+  HashMap<type, count>; shrink while map.size() > K and remove the key
+  when its count reaches 0. Space is O(K), not O(n).
 */
 
 /*
