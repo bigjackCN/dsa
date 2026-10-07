@@ -44,4 +44,12 @@ Problems solved with this pattern:
 - LC 167 - Two Sum II, Sorted Input (leetcode/167.java)
   Opposite ends. Discard left when sum is too small, right when too large.
   O(n) time, O(1) space; contrast with LC 1 HashMap solution (O(n) space).
+- LC 15 - 3Sum (leetcode/15.java)
+  Sort, fix nums[i], then opposite-ends two pointers on the rest. O(n^2).
+  Duplicate handling WITHOUT a Set:
+    * outer: if (i > 0 && nums[i] == nums[i-1]) continue;  (compare with
+      PREVIOUS so the first copy still explores triplets reusing the value)
+    * inner, after recording a match: skip equal values on both sides,
+      THEN left++ and right-- once more to step past the used triplet.
+  Generalizes to kSum: fix k-2 values, two pointers on the rest.
 */
