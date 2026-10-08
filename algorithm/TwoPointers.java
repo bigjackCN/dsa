@@ -52,4 +52,9 @@ Problems solved with this pattern:
     * inner, after recording a match: skip equal values on both sides,
       THEN left++ and right-- once more to step past the used triplet.
   Generalizes to kSum: fix k-2 values, two pointers on the rest.
+- LC 11 - Container With Most Water (leetcode/11.java)
+  Opposite ends, but the move rule is "discard the SHORTER line", justified
+  by: any container using the shorter line with something inside is capped
+  by that line's height and has less width, so it can't beat what we
+  already recorded. Exactly n - 1 iterations, O(1) space.
 */
