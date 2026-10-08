@@ -57,4 +57,12 @@ Problems solved with this pattern:
   by: any container using the shorter line with something inside is capped
   by that line's height and has less width, so it can't beat what we
   already recorded. Exactly n - 1 iterations, O(1) space.
+- LC 26 - Remove Duplicates from Sorted Array (leetcode/26.java)
+  Same direction (variant 2, read/write). write = end of the output, read
+  scans once; copy when nums[read] != nums[write]. Avoids O(n^2) shifting.
+  Follow-up "at most k copies" (LC 80): start both at k and compare with
+  nums[write - k] (the element k slots back in the OUTPUT).
+- LC 80 - Remove Duplicates from Sorted Array II (leetcode/80.java)
+  Same read/write template with k = 2: write = read = 2, keep nums[read]
+  only if it differs from nums[write - 2]. Guard: length < 3 returns length.
 */
