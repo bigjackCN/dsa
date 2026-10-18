@@ -38,6 +38,12 @@ is INSIDE the range (inclusive: <=, mid - 1) or OUTSIDE it (exclusive:
 <, mid). Pick one style and stay with it; mixing them skips elements or
 loops forever.
 
+Variant -- rotated sorted array (LC 33): use Template 1, but at each mid one
+half is always sorted. Decide which with `nums[mid] < nums[right]` (right half
+sorted) else left half sorted. Range-check the target against the sorted half:
+inside -> go there, otherwise go to the other half. With duplicates (LC 81),
+nums[mid] == nums[right] is ambiguous -> do right-- (worst case O(n)).
+
 Checklist before saying "done":
 - Trace [x] (one element), [x, y] (two elements), target smaller than all,
   target larger than all, target absent.
@@ -47,4 +53,7 @@ Problems solved with this pattern:
 - LC 704 - Binary Search (leetcode/704.java)
   Template 1. Bug seen: while (left < right) with inclusive bounds skipped
   the last remaining element.
+- LC 33  - Search in Rotated Sorted Array (leetcode/33.java)
+  Template 1 + "find the sorted half" step. Key insight: at any mid, one half
+  is always ascending, so a range check tells you which half has the target.
 */
