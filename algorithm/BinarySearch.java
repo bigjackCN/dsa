@@ -44,6 +44,18 @@ sorted) else left half sorted. Range-check the target against the sorted half:
 inside -> go there, otherwise go to the other half. With duplicates (LC 81),
 nums[mid] == nums[right] is ambiguous -> do right-- (worst case O(n)).
 
+Variant -- minimum of a rotated sorted array (LC 153): search for the rotation
+drop instead of a value. Use Template 2 style (left < right, right = mid):
+compare nums[mid] with nums[right]; if nums[mid] > nums[right] the minimum is
+strictly right of mid (left = mid + 1), else mid may be the minimum
+(right = mid). Never use right = mid - 1 here. Return nums[left] at the end,
+not the index. Comparing with nums[left] needs an extra "already sorted" case.
+
+Variant -- first / last occurrence with duplicates (LC 34): on a match, do NOT
+return. Remember it as a candidate and keep searching one side (first:
+right = mid - 1; last: left = mid + 1). Two separate searches, candidates start
+at -1. Never use a linear scan after the match (that is O(n)).
+
 Checklist before saying "done":
 - Trace [x] (one element), [x, y] (two elements), target smaller than all,
   target larger than all, target absent.
@@ -56,4 +68,10 @@ Problems solved with this pattern:
 - LC 33  - Search in Rotated Sorted Array (leetcode/33.java)
   Template 1 + "find the sorted half" step. Key insight: at any mid, one half
   is always ascending, so a range check tells you which half has the target.
+- LC 153 - Find Minimum in Rotated Sorted Array (leetcode/153.java)
+  Template 2 style. Bugs seen: right = mid paired with left <= right, strict
+  < breaking on [2,1], returning an index instead of a value.
+- LC 34  - Find First and Last Position of Element in Sorted Array (leetcode/34.java)
+  Template 1 with "remember candidate, keep searching". Bugs seen: linear scan
+  after a match (O(n)), trying to find both ends in one loop.
 */
